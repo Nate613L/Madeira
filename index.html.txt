@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Madeira Itinerary · April 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c1622;--bg2:#111f2e;--bg3:#16273a;
+  --text:#e2d8c8;--muted:#6a7d8e;--faint:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.09);
+  --mon:#e8a87c;--tue:#7eb8a4;--wed:#a898d4;--extra:#c4a882;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:700px;margin:0 auto;overflow-x:hidden}
+
+/* HEADER */
+.header{padding:40px 24px 24px;text-align:center;background:linear-gradient(180deg,var(–bg2),var(–bg));border-bottom:1px solid var(–border);position:relative;overflow:hidden}
+.header::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(126,184,164,0.12),transparent 65%);pointer-events:none}
+.eyebrow{font-weight:300;font-size:10px;letter-spacing:5px;color:var(–tue);text-transform:uppercase;margin-bottom:12px}
+.h-title{font-family:‘Cormorant Garamond’,serif;font-weight:300;font-size:clamp(28px,8vw,50px);color:#f5ede0;letter-spacing:1px;line-height:1.1;margin-bottom:10px}
+.h-sub{font-size:12px;color:var(–muted);letter-spacing:.5px}
+.preg-pill{display:inline-block;margin-top:12px;padding:5px 14px;background:rgba(168,152,212,0.15);border:1px solid rgba(168,152,212,0.35);border-radius:20px;font-size:11px;color:#a898d4;letter-spacing:.5px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;padding:16px 14px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(–border)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:80px;padding:10px 6px;background:var(–faint);border:1px solid var(–border);border-radius:10px;cursor:pointer;color:var(–muted);font-family:‘Jost’,sans-serif;font-size:11px;font-weight:500;text-align:center;transition:all .2s}
+.tab .tday{font-size:11px;font-weight:500;margin-bottom:3px}
+.tab .tcount{font-size:10px;opacity:.7;font-weight:300}
+.tab.a-mon{background:rgba(232,168,124,.15);border-color:rgba(232,168,124,.5);color:var(–mon)}
+.tab.a-tue{background:rgba(126,184,164,.15);border-color:rgba(126,184,164,.5);color:var(–tue)}
+.tab.a-wed{background:rgba(168,152,212,.15);border-color:rgba(168,152,212,.5);color:var(–wed)}
+.tab.a-extra{background:rgba(196,168,130,.15);border-color:rgba(196,168,130,.5);color:var(–extra)}
+
+/* PANELS */
+.panel{display:none}.panel.active{display:block}
+.day-hdr{margin:14px 16px 10px;padding:13px 16px;border-radius:10px}
+.day-hdr-name{font-size:17px;margin-bottom:3px;font-family:‘Cormorant Garamond’,serif;font-weight:400}
+.day-hdr-sub{font-size:12px;color:var(–muted);font-weight:300}
+.day-note{margin:0 16px 12px;padding:10px 14px;border-radius:8px;font-size:12px;color:var(–muted);font-weight:300;background:rgba(255,255,255,0.03);border:1px solid var(–border)}
+
+/* CARDS */
+.stops{padding:4px 16px 24px;display:flex;flex-direction:column;gap:8px}
+.card{display:flex;align-items:center;gap:12px;background:var(–faint);border:1px solid var(–border);border-radius:14px;padding:12px 14px;cursor:pointer;text-align:left;width:100%;transition:all .18s;font-family:‘Jost’,sans-serif}
+.card:hover,.card:active{background:rgba(255,255,255,0.08)}
+.cnum{width:26px;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500}
+.cthumb{width:64px;min-width:64px;height:64px;border-radius:10px;overflow:hidden;background:var(–bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px}
+.cthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.cinfo{flex:1;min-width:0}
+.cbadges{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap}
+.ctag{font-size:9px;font-weight:500;padding:2px 7px;border-radius:4px;letter-spacing:.5px}
+.ctime{font-size:11px;color:var(–muted);font-weight:300}
+.cname{font-size:15px;color:#ede5d5;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:‘Cormorant Garamond’,serif;font-weight:400}
+.ctype{font-size:11px;color:var(–muted);font-weight:300}
+.carrow{color:#3a4a5a;font-size:20px;padding-left:4px;flex-shrink:0}
+
+/* PREGNANCY BADGE */
+.pbadge{font-size:9px;font-weight:500;padding:2px 6px;border-radius:4px;letter-spacing:.4px;white-space:nowrap}
+.p-ok{background:rgba(16,185,129,.2);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.p-cau{background:rgba(245,158,11,.2);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+
+/* EXTRAS SECTION */
+.extras-intro{margin:14px 16px 14px;padding:14px 16px;background:rgba(196,168,130,.08);border:1px solid rgba(196,168,130,.25);border-radius:12px;font-size:13px;color:#b8a888;font-weight:300;line-height:1.7}
+.extras-intro strong{color:var(–extra);font-weight:500}
+.extra-group{padding:0 16px;margin-bottom:20px}
+.extra-group-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(–extra);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(196,168,130,.2)}
+.extra-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(–border);align-items:flex-start}
+.extra-item:last-child{border-bottom:none}
+.extra-emoji{font-size:20px;flex-shrink:0;margin-top:2px}
+.extra-name{font-size:14px;color:#ddd0bb;font-family:‘Cormorant Garamond’,serif;margin-bottom:3px}
+.extra-why{font-size:12px;color:var(–muted);font-weight:300;line-height:1.6}
+.extra-preg{font-size:10px;margin-top:4px}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:linear-gradient(180deg,var(–bg3),var(–bg2));border-radius:22px 22px 0 0;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;border:1px solid rgba(255,255,255,.1);border-bottom:none;animation:up .3s ease}
+@keyframes up{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhero{position:relative;height:250px;overflow:hidden;border-radius:22px 22px 0 0;background:var(–bg3);display:flex;align-items:center;justify-content:center;font-size:72px}
+.mhero img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+.mgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(17,28,42,.96) 100%)}
+.mclose{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;font-family:‘Jost’,sans-serif}
+.mtag-wrap{position:absolute;bottom:14px;left:18px;z-index:10}
+.mbody{padding:20px 22px 40px}
+.mtype{font-size:12px;color:var(–muted);margin-bottom:4px;font-weight:300}
+.mtitle{font-family:‘Cormorant Garamond’,serif;font-size:clamp(22px,5vw,30px);font-weight:400;color:#f0e8d8;margin-bottom:6px;letter-spacing:.5px}
+.mdur{font-size:12px;color:#4a6a7a;margin-bottom:18px}
+.mdesc{font-size:14px;line-height:1.85;color:#b8ccc8;margin-bottom:18px;font-weight:300}
+.mpreg{margin-bottom:16px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.65;font-weight:300}
+.mpreg-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:500}
+.mtips{background:rgba(126,184,164,.07);border:1px solid rgba(126,184,164,.2);border-radius:12px;padding:14px 16px}
+.mtips-title{font-size:10px;letter-spacing:2px;color:var(–tue);margin-bottom:8px;text-transform:uppercase;font-weight:500}
+.mtips-text{font-size:13px;color:#8aaa9a;line-height:1.7;font-weight:300}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Madeira Island · April 2025</div>
+  <h1 class="h-title">The Madeira<br>Itinerary</h1>
+  <div class="h-sub">Monday 4:30 PM → Wednesday Night</div>
+  <div class="preg-pill">🤰 Pregnancy-Safe Edition · 1–3 Months</div>
+</div>
+
+<div class="tabs">
+  <button class="tab a-mon" data-day="mon" onclick="switchDay('mon')">
+    <div class="tday">MON</div><div class="tcount">3 stops</div>
+  </button>
+  <button class="tab" data-day="tue" onclick="switchDay('tue')">
+    <div class="tday">TUE</div><div class="tcount">6 stops</div>
+  </button>
+  <button class="tab" data-day="wed" onclick="switchDay('wed')">
+    <div class="tday">WED</div><div class="tcount">5 stops</div>
+  </button>
+  <button class="tab" data-day="extra" onclick="switchDay('extra')">
+    <div class="tday">EXTRAS</div><div class="tcount">bonus</div>
+  </button>
+</div>
+
+<!-- MONDAY -->
+
+<div class="panel active" id="panel-mon">
+  <div class="day-hdr" style="background:rgba(232,168,124,.12);border:1px solid rgba(232,168,124,.3)">
+    <div class="day-hdr-name" style="color:var(--mon)">Monday, April 7</div>
+    <div class="day-hdr-sub">Easy Arrival Afternoon · Light & Scenic</div>
+  </div>
+  <div class="day-note">Starting at 4:30 PM — gentle, scenic, and low-effort. Just enough to shake off travel and catch a stunning first sunset.</div>
+  <div class="stops" id="stops-mon"></div>
+</div>
+
+<!-- TUESDAY -->
+
+<div class="panel" id="panel-tue">
+  <div class="day-hdr" style="background:rgba(126,184,164,.12);border:1px solid rgba(126,184,164,.3)">
+    <div class="day-hdr-name" style="color:var(--tue)">Tuesday, April 8</div>
+    <div class="day-hdr-sub">Sunrise · Ancient Forest · Beaches · Sunset</div>
+  </div>
+  <div class="day-note">The big day — an early sunrise start, Madeira's most magical forest, two stunning beaches, and natural volcanic pools.</div>
+  <div class="stops" id="stops-tue"></div>
+</div>
+
+<!-- WEDNESDAY -->
+
+<div class="panel" id="panel-wed">
+  <div class="day-hdr" style="background:rgba(168,152,212,.12);border:1px solid rgba(168,152,212,.3)">
+    <div class="day-hdr-name" style="color:var(--wed)">Wednesday, April 9</div>
+    <div class="day-hdr-sub">Sunrise Hike · Culture · Whale Watching · Final Sunset</div>
+  </div>
+  <div class="day-note">A sunrise hike, Santana's iconic houses, whale watching, and ending with one of Madeira's most breathtaking viewpoints before the final night.</div>
+  <div class="stops" id="stops-wed"></div>
+</div>
+
+<!-- EXTRAS TAB -->
+
+<div class="panel" id="panel-extra">
+  <div class="day-hdr" style="background:rgba(196,168,130,.1);border:1px solid rgba(196,168,130,.3)">
+    <div class="day-hdr-name" style="color:var(--extra)">Bonus & Extras</div>
+    <div class="day-hdr-sub">Everything that didn't make the main itinerary</div>
+  </div>
+  <div class="extras-intro">
+    These places are all worth knowing about. Some are <strong>great add-ons</strong> if you have extra time in a day. Some were cut simply because the days were already full. A few are <strong>skipped due to pregnancy</strong> — marked clearly below.
+  </div>
+
+  <div class="extra-group">
+    <div class="extra-group-title">Near Pico do Arieiro (Monday / Tuesday)</div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Miradouro do Juncal</div>
+        <div class="extra-why">5–10 min walk from Arieiro. A secondary viewpoint — great if you arrive early and have the energy. Easy add-on to the sunrise stop.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Miradouro do Ninho da Manta</div>
+        <div class="extra-why">~20 min walk each way from Arieiro. A beautiful extra viewpoint but adds significant time to an early morning. Skip unless you have a slow morning planned.</div>
+        <div class="extra-preg"><span class="pbadge p-cau">⚠ CAUTION</span> — exposed trail, uneven terrain</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-group">
+    <div class="extra-group-title">Along the North Coast (Tuesday)</div>
+    <div class="extra-item">
+      <div class="extra-emoji">💧</div>
+      <div>
+        <div class="extra-name">Ponta do Poiso (near Véu da Noiva)</div>
+        <div class="extra-why">Alternative to Véu da Noiva with a slightly better cliff angle. Requires a short hike. Only worth it if you skip the main viewpoint and want the extra challenge.</div>
+        <div class="extra-preg"><span class="pbadge p-cau">⚠ CAUTION</span> — short but uneven trail</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🌊</div>
+      <div>
+        <div class="extra-name">Piscinas Naturais do Aquário</div>
+        <div class="extra-why">The rustic, free alternative to Porto Moniz pools just down the road. More raw and wild — but slippery rocks make it less suitable during pregnancy. Great if not pregnant.</div>
+        <div class="extra-preg"><span class="pbadge p-cau">⚠ CAUTION</span> — slippery volcanic rock, no railings</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Miradouro da Garganta Funda</div>
+        <div class="extra-why">A dramatic gorge viewpoint on the drive toward Ponta do Tristão. Worth a quick 10-min pull-off if you pass through. Cut for time, not quality.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Miradouro do Fio</div>
+        <div class="extra-why">A small detour off the main route near Ponta do Tristão. Scenic but adds driving time. Only worth it if the schedule is relaxed.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-group">
+    <div class="extra-group-title">Eastern Madeira (Wednesday)</div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Miradouro do Cortado</div>
+        <div class="extra-why">A scenic stop 4 min before Santana. Worth a 10-min pull-off on the way in. Can be combined with the Santana stop easily.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🏖️</div>
+      <div>
+        <div class="extra-name">Prainha do Caniçal</div>
+        <div class="extra-why">A small sandy beach near the eastern tip — one of the few sandy beaches on Madeira. Nice if you want a quieter beach alternative. Cut to keep Wednesday focused.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🏖️</div>
+      <div>
+        <div class="extra-name">Praia de Machico</div>
+        <div class="extra-why">A crescent-shaped beach with a boardwalk near Machico town. Good if you want a sand beach experience. Skipped as Tuesday's beaches are more dramatic.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-group">
+    <div class="extra-group-title">Near Funchal</div>
+    <div class="extra-item">
+      <div class="extra-emoji">🚡</div>
+      <div>
+        <div class="extra-name">Funchal Cable Car to Monte</div>
+        <div class="extra-why">A cable car ride from Funchal up to the Monte district — great views over the city and bay. Temporarily noted as closed but worth checking current status. Pregnancy-safe if operational.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span> — check if currently operational</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🌿</div>
+      <div>
+        <div class="extra-name">Monte Palace Madeira</div>
+        <div class="extra-why">A multi-level botanical garden at the top of the cable car. Beautiful and unusual — great if the cable car is running and you have a relaxed morning in Funchal.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">👁️</div>
+      <div>
+        <div class="extra-name">Picos dos Barcelos Viewpoint</div>
+        <div class="extra-why">A sweeping viewpoint over Funchal with a cafe. Easy drive-up. Great add-on for a Funchal evening. Cut because the itinerary ends naturally at the waterfront.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-group">
+    <div class="extra-group-title">Skipped — Not Suitable During Pregnancy</div>
+    <div class="extra-item">
+      <div class="extra-emoji">🪂</div>
+      <div>
+        <div class="extra-name">Canyoning — Epic Madeira</div>
+        <div class="extra-why">Rappelling down waterfalls, physical impact, and fall risk make this a definite skip during any trimester. A fantastic activity for a non-pregnant trip.</div>
+        <div class="extra-preg" style="color:#ef4444;font-size:11px">✗ AVOID during pregnancy</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🌿</div>
+      <div>
+        <div class="extra-name">PR9 Levada do Caldeirão Verde (Full Hike)</div>
+        <div class="extra-why">A 4–5 hour hike with four pitch-black tunnels that are wet and slippery. The length and conditions make it too demanding for early pregnancy. Beautiful trail for another trip.</div>
+        <div class="extra-preg" style="color:#ef4444;font-size:11px">✗ AVOID during pregnancy</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🔭</div>
+      <div>
+        <div class="extra-name">Cabo Girão Skywalk</div>
+        <div class="extra-why">Safe activity normally, but cut from the main itinerary as Thursday was removed. Easily added back on Wednesday afternoon if schedule allows — it's only 20 min from Funchal.</div>
+        <div class="extra-preg"><span class="pbadge p-ok">✓ SAFE</span> — great add-on if time permits Wednesday</div>
+      </div>
+    </div>
+    <div class="extra-item">
+      <div class="extra-emoji">🏭</div>
+      <div>
+        <div class="extra-name">North Mills Distillery</div>
+        <div class="extra-why">Interesting heritage distillery — but not relevant during pregnancy as tasting is the main draw. Worth visiting on a non-pregnant trip.</div>
+        <div class="extra-preg" style="color:#ef4444;font-size:11px">✗ Skipped — tasting not suitable during pregnancy</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:40px"></div>
+</div>
+
+<!-- MODAL -->
+
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhero" id="mhero">
+      <span id="memoji"></span>
+      <img id="mimg" src="" alt="" onerror="this.style.display='none'"/>
+      <div class="mgrad"></div>
+      <button class="mclose" onclick="closeModal()">×</button>
+      <div class="mtag-wrap"><span id="mtag" class="ctag"></span></div>
+    </div>
+    <div class="mbody">
+      <div class="mtype" id="mtype"></div>
+      <div class="mtitle" id="mtitle"></div>
+      <div class="mdur" id="mdur"></div>
+      <div class="mdesc" id="mdesc"></div>
+      <div class="mpreg" id="mpreg"></div>
+      <div class="mtips"><div class="mtips-title">Insider Tips</div><div class="mtips-text" id="mtips"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DAYS = {
+  mon:{
+    accent:'#e8a87c',
+    stops:[
+      {
+        name:'Câmara de Lobos Harbour',emoji:'⚓',type:'Coastal Fishing Village',tag:'SCENIC',tagColor:'#0ea5e9',
+        time:'4:30 PM',duration:'4:30 – 6:00 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Camara_de_Lobos%2C_Madeira_-_2013-01-09_-_05.jpg/800px-Camara_de_Lobos%2C_Madeira_-_2013-01-09_-_05.jpg',
+        desc:'A charming fishing village that was Winston Churchill\'s favorite painting spot. Colorful boats bob in the harbour against dramatic cliffs. One of the most photogenic spots near Funchal — perfect for a gentle first-afternoon stroll to settle in.',
+        preg:'ok',pregNote:'Completely safe. A relaxed flat stroll through a beautiful harbour village. Take your time, find a bench, and soak it in.',
+        tips:'Stop at Miradouro Winston Churchill just above the village first for the aerial view, then walk down to the harbour. Look for the small fishing caves carved into the base of the cliffs.'
+      },
+      {
+        name:'Av. do Mar — Funchal Waterfront',emoji:'🌴',type:'Waterfront Boulevard',tag:'STROLL',tagColor:'#6366f1',
+        time:'6:15 PM',duration:'6:15 – 7:30 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Funchal%2C_Madeira%2C_Portugal%2C_panoramio_%281%29.jpg/800px-Funchal%2C_Madeira%2C_Portugal%2C_panoramio_%281%29.jpg',
+        desc:'Funchal\'s elegant palm-lined waterfront boulevard runs along the bay with gardens, cafes, and sweeping views of the harbour and hills beyond. A perfect gentle intro to the island\'s capital — just walking, looking, and breathing it all in.',
+        preg:'ok',pregNote:'Perfect for early pregnancy — flat, beautiful, and completely relaxed. Sit whenever you like along the promenade benches.',
+        tips:'Walk the full length from the marina to the old town end. The Praça do Município (main square) is a short walk inland and worth a quick look — beautiful colonial architecture.'
+      },
+      {
+        name:'Ponta do Sol — Sunset',emoji:'🌅',type:'Sunset at Madeira\'s Sunniest Spot',tag:'SUNSET',tagColor:'#f97316',
+        time:'~7:45 PM',duration:'Sunset watch',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Ponta_do_Sol%2C_Madeira_%2801%29.jpg/800px-Ponta_do_Sol%2C_Madeira_%2801%29.jpg',
+        desc:'The sunniest spot on Madeira — a small, relaxed coastal town on the southwest coast with a black pebble beach and historic pier. The light here at golden hour is extraordinary. A gentle 20-min drive from Funchal for your first Madeira sunset.',
+        preg:'ok',pregNote:'Perfectly safe and restful. A flat coastal walk to the pier. Beautiful way to end your first day without overdoing it.',
+        tips:'Walk out to Ponta do Sol Pier for the best angle on the sunset. The town itself is small and calm — great for a peaceful first evening.'
+      },
+    ]
+  },
+  tue:{
+    accent:'#7eb8a4',
+    stops:[
+      {
+        name:'Bica da Cana Sunrise',emoji:'🌄',type:'Above-the-Clouds Viewpoint',tag:'SUNRISE',tagColor:'#f59e0b',
+        time:'7:25 AM',duration:'7:25 – 8:15 AM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Paul_da_Serra_plateau%2C_Madeira%2C_Portugal%2C_2020.jpg/800px-Paul_da_Serra_plateau%2C_Madeira%2C_Portugal%2C_2020.jpg',
+        desc:'A high-altitude plateau at 1,560m on the Paul da Serra, often sitting above the cloud line at sunrise. One of the most accessible above-the-clouds experiences on Madeira — and much quieter than Arieiro. The drive up through the clouds alone is surreal.',
+        preg:'ok',pregNote:'Safe — it\'s a very short walk from the car park to the viewpoint. Dress very warmly. If you feel any dizziness from the altitude, stay near the car and enjoy the view from there.',
+        tips:'Enter from the Car Park on the western side — the road from the other end is closed. Extremely cold and windy; bring a serious jacket and something warm to drink.'
+      },
+      {
+        name:'Fanal Ancient Forest',emoji:'🌲',type:'UNESCO Laurisilva Forest',tag:'UNMISSABLE',tagColor:'#dc2626',
+        time:'8:50 AM',duration:'8:50 – 11:00 AM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Fanal%2C_Porto_Moniz%2C_Madeira_-_panoramio_%2810%29.jpg/800px-Fanal%2C_Porto_Moniz%2C_Madeira_-_panoramio_%2810%29.jpg',
+        desc:'A UNESCO World Heritage laurisilva forest filled with ancient, gnarled trees hundreds of years old. When fog rolls through it becomes completely otherworldly — like stepping into a fairy tale. The Fanal Witch Tree and Fanal Pond are both short, flat walks from the parking lot.',
+        preg:'ok',pregNote:'Great choice during early pregnancy. Short, gentle, flat walks on forest paths. Cool and shaded. Watch your footing on wet roots and mossy ground — wear good grip shoes.',
+        tips:'Best when misty — check the forecast the night before. Even in clear weather the trees are dramatic. Witch Tree is ~5 min from parking; Fanal Pond is ~15 min. Both very manageable.'
+      },
+      {
+        name:'Véu da Noiva Viewpoint',emoji:'💧',type:'Clifftop Waterfall Viewpoint',tag:'QUICK STOP',tagColor:'#8b5cf6',
+        time:'11:30 AM',duration:'11:30 – 11:50 AM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/V%C3%A9u_da_noiva_Madeira.jpg/800px-V%C3%A9u_da_noiva_Madeira.jpg',
+        desc:'A clifftop viewpoint on Madeira\'s wild north coast where you watch waterfalls plunge directly into the ocean far below. One of the most dramatically striking panoramas on the island — and it takes only 15 minutes.',
+        preg:'ok',pregNote:'Safe — short, railed viewpoint. No strenuous activity. Just walk, look, and marvel.',
+        tips:'A 15–20 min stop maximum. Look both left and right from the platform for the full north coast panorama before heading to the beaches.'
+      },
+      {
+        name:'Praia de Seixal',emoji:'🏖️',type:'Black Volcanic Sand Beach',tag:'SWIM',tagColor:'#0ea5e9',
+        time:'12:15 PM',duration:'12:15 – 1:30 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Seixal%2C_S%C3%A3o_Vicente%2C_Madeira_-_panoramio_%281%29.jpg/800px-Seixal%2C_S%C3%A3o_Vicente%2C_Madeira_-_panoramio_%281%29.jpg',
+        desc:'One of Madeira\'s most stunning beaches — dramatic volcanic black sand framed by towering green cliffs with a small waterfall dripping onto the shore. The water is clear and cool. There\'s a viewing platform above that gives a completely different and equally stunning perspective.',
+        preg:'ok',pregNote:'Safe. Gentle swimming in calm conditions is fine in early pregnancy. Avoid the sea if surf is strong. The beach itself is flat and easy to walk on. Use the viewing platform above for the best view before descending.',
+        tips:'Visit the elevated viewing platform before walking down to the beach. Often quieter than other Madeira beaches. Parking is right at the beach entrance.'
+      },
+      {
+        name:'Porto Moniz Natural Pools',emoji:'🌊',type:'Volcanic Swimming Pools',tag:'SWIM',tagColor:'#0ea5e9',
+        time:'2:30 PM',duration:'2:30 – 4:00 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Porto_Moniz_natural_pools_Madeira_Islands_2.jpg/800px-Porto_Moniz_natural_pools_Madeira_Islands_2.jpg',
+        desc:'Spectacular natural swimming pools carved from ancient volcanic rock and filled with crystal-clear Atlantic seawater. The maintained pools have proper facilities, stairs, and railings. One of Madeira\'s most unique and memorable swim experiences.',
+        preg:'ok',pregNote:'Safe in the maintained pools. Stick to the calmer, enclosed sections with stairs and railings — avoid the outer rock edges where waves can surge. The maintained Porto Moniz pools are the right choice here.',
+        tips:'Pay the small entry fee for the maintained pools — they have changing rooms, railings, and safer access. Far more suitable than the free rustic alternatives down the road.'
+      },
+      {
+        name:'Ponta do Tristão — Sunset',emoji:'🌅',type:'Northwestern Tip of Madeira',tag:'SUNSET',tagColor:'#f97316',
+        time:'~8:00 PM',duration:'Sunset watch',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Ponta_do_Tristo%2C_Madeira.jpg/800px-Ponta_do_Tristo%2C_Madeira.jpg',
+        desc:'The remote northwestern tip of Madeira — one of the island\'s most dramatic spots. Nothing ahead of you but open Atlantic. Watch the sun sink below the horizon in complete silence. One of the great sunset moments in all of Portugal.',
+        preg:'ok',pregNote:'Safe — a gentle walk to a viewpoint. The long winding drive here is the only consideration. Take breaks if needed, stay hydrated, and bring a warm layer for the evening.',
+        tips:'Arrive 30 min before sunset. The road is winding — allow extra driving time. Bring a jacket; it cools down fast near the cliff edge in the evening breeze.'
+      },
+    ]
+  },
+  wed:{
+    accent:'#a898d4',
+    stops:[
+      {
+        name:'Pico do Arieiro — Sunrise',emoji:'🏔️',type:'Madeira\'s Iconic Mountain Peak',tag:'SUNRISE',tagColor:'#f59e0b',
+        time:'7:00 AM',duration:'7:00 – 9:00 AM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Pico_do_Areeiro_-_Madeira_%2836893707582%29.jpg/800px-Pico_do_Areeiro_-_Madeira_%2836893707582%29.jpg',
+        desc:'Madeira\'s third-highest peak at 1,818m. The most famous sunrise spot on the island — arrive before dawn to watch the island emerge from a sea of clouds. On clear days you can see the island of Porto Santo 48km away. A once-in-a-lifetime kind of moment.',
+        preg:'ok',pregNote:'Safe — it\'s a drive-up viewpoint with minimal walking required. Dress very warmly. Don\'t push yourself on the optional side trails if energy is low.',
+        tips:'Dress in layers and bring a headlamp. The short walk to Miradouro do Juncal (5–10 min) is worth it if you feel good. The viewpoint at the main car park area is spectacular on its own.'
+      },
+      {
+        name:'Miradouro de Abismo',emoji:'👁️',type:'One of Madeira\'s Best Viewpoints',tag:'TOP RATED',tagColor:'#dc2626',
+        time:'10:00 AM',duration:'10:00 – 11:00 AM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Miradouro_do_Abismo_-_Madeira.jpg/800px-Miradouro_do_Abismo_-_Madeira.jpg',
+        desc:'Widely considered one of Madeira\'s absolute best viewpoints — a vertiginous perch above the dramatic São Lourenço peninsula on the eastern tip. Turquoise water on both sides, volcanic cliffs, and a vast horizon. Breathtaking in the morning light.',
+        preg:'ok',pregNote:'Safe — accessible by car with a short, flat walk to the railing. Stay behind the barriers. No physical demands beyond getting there.',
+        tips:'Head here early in the morning when the light is golden and the crowds are thinner. The view is best looking east toward the peninsula tip.'
+      },
+      {
+        name:'Casas Típicas de Santana',emoji:'🏡',type:'Cultural Heritage Village',tag:'CULTURAL',tagColor:'#8b5cf6',
+        time:'12:00 PM',duration:'12:00 – 1:15 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Santana%2C_Madeira_-_Casas_de_colmo_-_panoramio.jpg/800px-Santana%2C_Madeira_-_Casas_de_colmo_-_panoramio.jpg',
+        desc:'Santana\'s iconic A-frame thatched-roof houses — one of Madeira\'s most recognized images. These vivid, centuries-old dwellings with straw roofs sweeping to the ground are a window into traditional island life. A charming, compact, and relaxed stop.',
+        preg:'ok',pregNote:'Perfect midday stop during pregnancy. Flat, walkable, shaded in places, and culturally rich. Great opportunity to rest and explore at a slow pace.',
+        tips:'It\'s a small village — take your time exploring. Some houses sell locally made crafts and produce inside. The village is a 4-min drive from Miradouro do Cortado (worth a quick stop on the way in).'
+      },
+      {
+        name:'Whale Watching — Scorpio Madeira',emoji:'🐋',type:'Zodiac Wildlife Tour',tag:'BOOK AHEAD',tagColor:'#10b981',
+        time:'2:30 PM',duration:'2:30 – 5:30 PM',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Sperm_whale_the_life_below.jpg/800px-Sperm_whale_the_life_below.jpg',
+        desc:'Zodiac boat whale watching with Scorpio Madeira. The waters around Madeira are among Europe\'s best for cetaceans. Sperm whales, bottlenose dolphins, and common dolphins are regularly spotted. April is an excellent month for sightings.',
+        preg:'caution',pregNote:'Use caution — small zodiac boats bounce on waves and can jolt unexpectedly. In early pregnancy this is generally manageable but not ideal. Ask about sea conditions that day. If the swell is high, consider postponing or choosing a larger vessel. Confirm with your OB before booking.',
+        tips:'Dress in warm layers — it gets cold on open water fast. Bring a waterproof bag for your phone. Book in advance. If the sea is choppy on the day, it\'s okay to reschedule.'
+      },
+      {
+        name:'Miradouro do Pináculo — Final Sunset',emoji:'🌅',type:'Sunset Over Funchal',tag:'SUNSET',tagColor:'#f97316',
+        time:'~7:30 PM',duration:'Sunset watch',
+        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Funchal%2C_Madeira%2C_Portugal%2C_panoramio_%281%29.jpg/800px-Funchal%2C_Madeira%2C_Portugal%2C_panoramio_%281%29.jpg',
+        desc:'End the trip with a sweeping sunset view over Funchal and the bay below — the city lights beginning to flicker on as the sky turns amber and pink. The perfect final image of Madeira before your last night on the island.',
+        preg:'ok',pregNote:'Safe and beautiful. A gentle drive-up viewpoint. Sit, breathe, and take in the view. The perfect way to end the trip.',
+        tips:'Check the exact sunset time for the date. Arrive 20 min early for the best light. Bring a light jacket — it cools quickly at elevation even in April.'
+      },
+    ]
+  }
+};
+
+const pLabel={ok:'✓ SAFE',caution:'⚠ CAUTION'};
+const pClass={ok:'p-ok',caution:'p-cau'};
+const pBg={ok:'rgba(16,185,129,.1)',caution:'rgba(245,158,11,.1)'};
+const pBor={ok:'rgba(16,185,129,.25)',caution:'rgba(245,158,11,.25)'};
+const pCol={ok:'#10b981',caution:'#f59e0b'};
+
+function buildStops(){
+  Object.entries(DAYS).forEach(([dayId,day])=>{
+    const container=document.getElementById('stops-'+dayId);
+    if(!container)return;
+    day.stops.forEach((stop,idx)=>{
+      const card=document.createElement('button');
+      card.className='card';
+      card.onclick=()=>openModal(stop,day.accent);
+      card.innerHTML=`
+        <div class="cnum" style="background:${day.accent}25;border:1.5px solid ${day.accent}77;color:${day.accent}">${idx+1}</div>
+        <div class="cthumb">
+          <img src="${stop.img}" alt="${stop.name}" onerror="this.style.display='none';this.parentNode.textContent='${stop.emoji}'"/>
+        </div>
+        <div class="cinfo">
+          <div class="cbadges">
+            <span class="ctag" style="background:${stop.tagColor}28;color:${stop.tagColor};border:1px solid ${stop.tagColor}44">${stop.tag}</span>
+            <span class="ctime">${stop.time}</span>
+            <span class="pbadge ${pClass[stop.preg]}">${pLabel[stop.preg]}</span>
+          </div>
+          <div class="cname">${stop.name}</div>
+          <div class="ctype">${stop.emoji} ${stop.type}</div>
+        </div>
+        <div class="carrow">›</div>`;
+      container.appendChild(card);
+    });
+  });
+}
+
+function openModal(stop,accent){
+  document.getElementById('memoji').textContent=stop.emoji;
+  const img=document.getElementById('mimg');
+  img.src=stop.img; img.style.display='block';
+  const tag=document.getElementById('mtag');
+  tag.textContent=stop.tag;
+  tag.style.cssText=`background:${stop.tagColor}33;color:${stop.tagColor};border:1px solid ${stop.tagColor}55;font-size:10px;font-weight:500;padding:3px 9px;border-radius:5px;letter-spacing:.5px`;
+  document.getElementById('mtype').textContent=stop.emoji+' '+stop.type;
+  document.getElementById('mtitle').textContent=stop.name;
+  document.getElementById('mdur').textContent='🕐 '+stop.duration;
+  document.getElementById('mdesc').textContent=stop.desc;
+  const pe=document.getElementById('mpreg');
+  pe.style.cssText=`background:${pBg[stop.preg]};border:1px solid ${pBor[stop.preg]};border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.65;font-weight:300;margin-bottom:16px`;
+  pe.innerHTML=`<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${pCol[stop.preg]};margin-bottom:6px;font-weight:500">🤰 Pregnancy (1–3 months) &nbsp;<span class="pbadge ${pClass[stop.preg]}">${pLabel[stop.preg]}</span></div>${stop.pregNote}`;
+  document.getElementById('mtips').textContent=stop.tips;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function switchDay(dayId){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+dayId).classList.add('active');
+  const order=['mon','tue','wed','extra'];
+  const classMap={mon:'a-mon',tue:'a-tue',wed:'a-wed',extra:'a-extra'};
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.className='tab';
+    if(order[i]===dayId) t.classList.add(classMap[dayId]);
+  });
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+buildStops();
+</script>
+
+</body>
+</html>
